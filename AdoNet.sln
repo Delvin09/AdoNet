@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoNet", "AdoNet\AdoNet.csproj", "{FCFC5FD0-D3B7-44DE-97B1-699EE2C9A9EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFrameworkLessson", "EntityFrameworkLessson\EntityFrameworkLessson.csproj", "{CEA66920-552B-42F8-87C0-85E220746F97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{FCFC5FD0-D3B7-44DE-97B1-699EE2C9A9EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCFC5FD0-D3B7-44DE-97B1-699EE2C9A9EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCFC5FD0-D3B7-44DE-97B1-699EE2C9A9EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEA66920-552B-42F8-87C0-85E220746F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEA66920-552B-42F8-87C0-85E220746F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEA66920-552B-42F8-87C0-85E220746F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEA66920-552B-42F8-87C0-85E220746F97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

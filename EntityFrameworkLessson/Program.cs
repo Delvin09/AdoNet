@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace EntityFrameworkLessson
 {
@@ -8,9 +10,9 @@ namespace EntityFrameworkLessson
 
     public class Student : Person
     {
-        public Facultet? Facultet { get; set; }
+        public virtual Facultet? Facultet { get; set; }
 
-        public List<Lesson> Lessons { get; set; } = new List<Lesson>();
+        public virtual ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
 
         public int Year { get; set; }
     }
@@ -36,11 +38,11 @@ namespace EntityFrameworkLessson
 
         //public int? TeacherId { get; set; }
 
-        public Teacher? Teacher { get; set; } // TeacherId int FK to Teacher table
+        public virtual Teacher? Teacher { get; set; } // TeacherId int FK to Teacher table
 
         public int? FacId { get; set; }
 
-        public Facultet? Fac { get; set; }
+        public virtual Facultet? Fac { get; set; }
     }
 
     public class Facultet
@@ -49,11 +51,19 @@ namespace EntityFrameworkLessson
 
         public string Name { get; set; }
 
-        public List<Student> Students  { get; set; }
+        public virtual List<Student> Students  { get; set; }
 
-        public List<Lesson> Lessons { get; set; }
+        public virtual List<Lesson> Lessons { get; set; }
     }
 
+    public class Mark
+    {
+        public int Id { get; set; }
+        public virtual Student Student { get; set; }
+        public virtual Lesson Lesson { get; set; }
+
+        public int ExcamMark { get; set; }
+    }
 
     public class UniverContext : DbContext
     {
@@ -65,16 +75,22 @@ namespace EntityFrameworkLessson
 
         public DbSet<Facultet> Facultets { get; set; }
 
+        public DbSet<Mark> Marks { get; set; }
+
         public UniverContext() 
         {
             //Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-Q2BKQOF\\SQLEXPRESS;Initial Catalog=Univer_2;Integrated Security=True;Encrypt=False");
+            optionsBuilder
+                .UseSqlServer("Data Source=DESKTOP-Q2BKQOF\\SQLEXPRESS;Initial Catalog=Univer_2;Integrated Security=True;Encrypt=False");
             optionsBuilder.LogTo(Console.WriteLine);
+
+            optionsBuilder.UseLazyLoadingProxies();
 
             base.OnConfiguring(optionsBuilder);
         }
@@ -103,14 +119,25 @@ namespace EntityFrameworkLessson
             using var ctx = new UniverContext();
 
             //var st = ctx.Students.Where(s => s.Facultet != null && s.Facultet.Id == 1).ToList();
-            var fac = ctx.Facultets
-                .Include(f => f.Students)
-                    .ThenInclude(s => s.Lessons)
-                .First(f => f.Id == 1);
-            foreach (var s in fac.Students)
-                s.Year++;
 
+            var allLessons = ctx.Lessons.Where(l => l.Fac != null).ToArray();
 
+            //var r = ctx.Marks.ToArray();
+
+            foreach(var lesson in allLessons)
+            {
+                var facultet = lesson.Fac;
+                foreach (var s in facultet.Students)
+                {
+                    Console.WriteLine(s.FirstName);
+                }
+            }
+
+            //var fac = ctx.Facultets
+            //   // .Include(f => f.Students)
+            //   //    .ThenInclude(s => s.Lessons)
+            //    .Where(f => f.Id == 1)
+            //    .First(f => f.Id == 1);
 
             //var facultets = ctx.Facultets.ToArray();
             //var students = ctx.Students.Where(s => s.Facultet == null).ToArray();
